@@ -45,6 +45,7 @@ resource "aws_iam_role_policy" "codebuild" {
         "ecr:BatchCheckLayerAvailability",
         "ecr:GetDownloadUrlForLayer",
         "ecr:BatchGetImage",
+        "ecr:InitiateLayerUpload",
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents"
@@ -158,24 +159,19 @@ resource "aws_codebuild_project" "convertr-codebuild" {
   }
 }
 
-resource "aws_codebuild_webhook" "convertr-codebuild-hook" {
-  project_name = aws_codebuild_project.convertr-codebuild.name
+# resource "aws_codebuild_webhook" "convertr-codebuild-hook" {
+#   project_name = aws_codebuild_project.convertr-codebuild.name
 
-  filter_group {
-    filter {
-      type    = "EVENT"
-      pattern = "PUSH"
-    }
+#   filter_group {
+#     filter {
+#       type    = "EVENT"
+#       pattern = "PUSH"
+#     }
+#   }
+# }
 
-    filter {
-      type    = "HEAD_REF"
-      pattern = "master"
-    }
-  }
-}
-
-resource "aws_codebuild_source_credential" "github_token" {
-  auth_type   = "PERSONAL_ACCESS_TOKEN"
-  server_type = "GITHUB"
-  token       = var.github_token
-}
+# resource "aws_codebuild_source_credential" "github_token" {
+#   auth_type   = "PERSONAL_ACCESS_TOKEN"
+#   server_type = "GITHUB"
+#   token       = var.github_token
+# }

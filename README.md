@@ -9,7 +9,6 @@ The files in the repository that are a part of the solution for the task are:
 - terraform (folder)
 
 
-
 ### buildspec.yml
 This contains a standard build specification file. 
 When this is run the CodeBuild is triggered which will build the code in the repository. 
@@ -40,6 +39,7 @@ This also creates a CodeBuild Pipeline directed at this github account. `This ca
 - Run `terraform apply` to apply changes required and provision the infrastrucsture
 - Enter 'yes' to confirm when prompted. Run `terraform apply --auto-approve` to skip this step
 - The ECR URL will be output which can then be updated in the buildspec.yml file
+
 The infrastructure will now be created and will be ready for code to be updated to production for continuous deployment once pushed to github *if all tests are passed*
 
 The CodeBuild can be run manually to trigger the build.
