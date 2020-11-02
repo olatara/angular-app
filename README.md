@@ -9,7 +9,6 @@ The files in the repository that are a part of the solution for the task are:
 - terraform (folder)
 
 
-
 ### buildspec.yml
 This contains a standard build specification file. 
 When this is run the CodeBuild is triggered which will build the code in the repository. 
