@@ -117,17 +117,6 @@ resource "aws_codebuild_project" "convertr-codebuild" {
     type                        = "LINUX_CONTAINER"
     image_pull_credentials_type = "CODEBUILD"
     privileged_mode = "true"
-
-
-    environment_variable {
-      name  = "REGISTRY_URL"
-      value = aws_ecr_repository.convertr-app.repository_url
-    }
-
-    environment_variable {
-      name  = "AWS_DEFAULT_REGION"
-      value = "us-east-1"
-    }
   }
 
   logs_config {
@@ -159,16 +148,16 @@ resource "aws_codebuild_project" "convertr-codebuild" {
   }
 }
 
-# resource "aws_codebuild_webhook" "convertr-codebuild-hook" {
-#   project_name = aws_codebuild_project.convertr-codebuild.name
+resource "aws_codebuild_webhook" "convertr-codebuild-hook" {
+  project_name = aws_codebuild_project.convertr-codebuild.name
 
-#   filter_group {
-#     filter {
-#       type    = "EVENT"
-#       pattern = "PUSH"
-#     }
-#   }
-# }
+  filter_group {
+    filter {
+      type    = "EVENT"
+      pattern = "PUSH"
+    }
+  }
+}
 
 resource "aws_codebuild_source_credential" "github_token" {
   auth_type   = "PERSONAL_ACCESS_TOKEN"
