@@ -1,80 +1,49 @@
-[![RealWorld Frontend](https://img.shields.io/badge/realworld-frontend-%23783578.svg)](http://realworld.io)
-[![Build Status](https://travis-ci.org/gothinkster/angular-realworld-example-app.svg?branch=master)](https://travis-ci.org/gothinkster/angular-realworld-example-app)
 
-# ![Angular Example App](logo.png)
-
-> ### Angular codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
+# ![Convertr DevOps Technical Task](https://www.convertr.io/wp-content/themes/Convertr/images/logos/cvtr-logo-primary-light.svg)
 
 
-<a href="https://stackblitz.com/edit/angular-realworld" target="_blank"><img width="187" src="https://github.com/gothinkster/realworld/blob/master/media/edit_on_blitz.png?raw=true" /></a>&nbsp;&nbsp;<a href="https://thinkster.io/tutorials/building-real-world-angular-2-apps" target="_blank"><img width="384" src="https://raw.githubusercontent.com/gothinkster/realworld/master/media/learn-btn-hr.png" /></a>
-
-### [Demo](https://angular.realworld.io)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
+# Solution
+The files in the repository that are a part of the solution for the task are:
+- buildspec.yml
+- Dockerfile
+- terraform (folder)
 
 
 
-This codebase was created to demonstrate a fully fledged application built with Angular that interacts with an actual backend server including CRUD operations, authentication, routing, pagination, and more. We've gone to great lengths to adhere to the [Angular Styleguide](https://angular.io/styleguide) & best practices.
+### buildspec.yml
+This contains a standard build specification file. 
+When this is run the CodeBuild is triggered which will build the code in the repository. 
 
-Additionally, there is an Angular 1.5 version of this codebase that you can [fork](https://github.com/gothinkster/angularjs-realworld-example-app) and/or [learn how to recreate](https://thinkster.io/angularjs-es6-tutorial).
+Line 11 REPOSITORY_URI=513836189211.dkr.ecr.us-east-1.amazonaws.com/angular-app is referencing an ecr cluster. 
+This ideally will be changed to another created ECR cluster URI for this to work.
 
+`Running the teerraform CODE will create and Output an ECR  URL which can be updated here.`
 
-# How it works
+### Dockerfile
+When the code build is run, the docker file will build a docker image - Starting an nginx server for the application. 
 
-We're currently working on some docs for the codebase (explaining where functionality is located, how it works, etc) but the codebase should be straightforward to follow as is. We've also released a [step-by-step tutorial w/ screencasts](https://thinkster.io/tutorials/building-real-world-angular-2-apps) that teaches you how to recreate the codebase from scratch.
+### terrafrom folder
+This contains infrastructure as code, separated into different files for readability. 
 
-### Making requests to the backend API
+This will Provision the ECS Cluster Managed by AWS Fargate. I also provisions, the target groups, ALB's and Task definitions for the cluster. Along with associated securtiy groups.
 
-For convenience, we have a live API server running at https://conduit.productionready.io/api for the application to make requests against. You can view [the API spec here](https://github.com/GoThinkster/productionready/blob/master/api) which contains all routes & responses for the server.
+The ECR Repository is also created and the URL will be output once the code is run. ECR repository is Encrupted using AWS KMS.
 
-The source code for the backend server (available for Node, Rails and Django) can be found in the [main RealWorld repo](https://github.com/gothinkster/realworld).
+This also creates a CodeBuild Pipeline directed at this github account. `This can be changed by changing the personal access token and github repo in the tfvars file`. 
 
-If you want to change the API URL to a local server, simply edit `src/environments/environment.ts` and change `api_url` to the local server's URL (i.e. `localhost:3000/api`)
+# Running the project
+**Assumption: AWS CLI is configured**
 
+- clone repository
+- cd to terraform folder and run `terraform init` command to initialise and download required providers.
+- Run `terraform plan` to see execution plan
+- Run `terraform apply` to apply changes required and provision the infrastrucsture
+- Enter 'yes' to confirm when prompted. Run `terraform apply --auto-approve` to skip this step
+- The ECR URL will be output which can then be updated in the buildspec.yml file
+The infrastructure will now be created and will be ready for code to be updated to production for continuous deployment once pushed to github *if all tests are passed*
 
-# Getting started
-
-Make sure you have the [Angular CLI](https://github.com/angular/angular-cli#installation) installed globally. We use [Yarn](https://yarnpkg.com) to manage the dependencies, so we strongly recommend you to use it. you can install it from [Here](https://yarnpkg.com/en/docs/install), then run `yarn install` to resolve all dependencies (might take a minute).
-
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
-
-### Building the project
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-
-## Functionality overview
-
-The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication. You can view a live demo over at https://angular.realworld.io
-
-**General functionality:**
-
-- Authenticate users via JWT (login/signup pages + logout button on settings page)
-- CRU* users (sign up & settings page - no deleting required)
-- CRUD Articles
-- CR*D Comments on articles (no updating required)
-- GET and display paginated lists of articles
-- Favorite articles
-- Follow other users
-
-**The general page breakdown looks like this:**
-
-- Home page (URL: /#/ )
-    - List of tags
-    - List of articles pulled from either Feed, Global, or by Tag
-    - Pagination for list of articles
-- Sign in/Sign up pages (URL: /#/login, /#/register )
-    - Uses JWT (store the token in localStorage)
-    - Authentication can be easily switched to session/cookie based
-- Settings page (URL: /#/settings )
-- Editor page to create/edit articles (URL: /#/editor, /#/editor/article-slug-here )
-- Article page (URL: /#/article/article-slug-here )
-    - Delete article button (only shown to article's author)
-    - Render markdown from server client side
-    - Comments section at bottom of page
-    - Delete comment button (only shown to comment's author)
-- Profile page (URL: /#/profile/:username, /#/profile/:username/favorites )
-    - Show basic user info
-    - List of articles populated from author's created articles or author's favorited articles
+The CodeBuild can be run manually to trigger the build.
 
 
 <br />
 
-[![Brought to you by Thinkster](https://raw.githubusercontent.com/gothinkster/realworld/master/media/end.png)](https://thinkster.io)
