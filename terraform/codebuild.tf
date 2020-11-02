@@ -145,17 +145,6 @@ resource "aws_codebuild_project" "convertr-codebuild" {
   }
 }
 
-resource "aws_codebuild_webhook" "convertr-codebuild-hook" {
-  project_name = aws_codebuild_project.convertr-codebuild.name
-
-  filter_group {
-    filter {
-      type    = "EVENT"
-      pattern = "PUSH"
-    }
-  }
-}
-
 resource "aws_codebuild_source_credential" "github_token" {
   auth_type   = "PERSONAL_ACCESS_TOKEN"
   server_type = "GITHUB"
