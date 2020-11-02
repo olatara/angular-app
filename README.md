@@ -13,8 +13,8 @@ The files in the repository that are a part of the solution for the task are:
 This contains a standard build specification file. 
 When this is run the CodeBuild is triggered which will build the code in the repository. 
 
-Line 11 REPOSITORY_URI=513836189211.dkr.ecr.us-east-1.amazonaws.com/angular-app is referencing an ecr cluster. 
-This ideally will be changed to another created ECR cluster URI for this to work.
+*Line 11: REPOSITORY_URI=513836189211.dkr.ecr.us-east-1.amazonaws.com/angular-app is referencing an ecr cluster. 
+This ideally will be changed to another created ECR cluster URI for this to work.*
 
 `Running the teerraform CODE will create and Output an ECR  URL which can be updated here.`
 
@@ -39,6 +39,7 @@ This also creates a CodeBuild Pipeline directed at this github account. `This ca
 - Run `terraform apply` to apply changes required and provision the infrastrucsture
 - Enter 'yes' to confirm when prompted. Run `terraform apply --auto-approve` to skip this step
 - The ECR URL will be output which can then be updated in the buildspec.yml file
+- Run `terraform destroy` to destroy the terrafrorm managed infrastructure
 
 The infrastructure will now be created and will be ready for code to be updated to production for continuous deployment once pushed to github *if all tests are passed*
 
