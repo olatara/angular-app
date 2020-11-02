@@ -41,11 +41,8 @@ resource "aws_iam_role_policy" "codebuild" {
         "*"
       ],
       "Action": [
-        "ecr:GetAuthorizationToken",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:BatchGetImage",
-        "ecr:InitiateLayerUpload",
+        "ecr:*",
+        "cloudtrail:LookupEvents",
         "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents"
@@ -148,16 +145,16 @@ resource "aws_codebuild_project" "convertr-codebuild" {
   }
 }
 
-resource "aws_codebuild_webhook" "convertr-codebuild-hook" {
-  project_name = aws_codebuild_project.convertr-codebuild.name
+# resource "aws_codebuild_webhook" "convertr-codebuild-hook" {
+#   project_name = aws_codebuild_project.convertr-codebuild.name
 
-  filter_group {
-    filter {
-      type    = "EVENT"
-      pattern = "PUSH"
-    }
-  }
-}
+#   filter_group {
+#     filter {
+#       type    = "EVENT"
+#       pattern = "PUSH"
+#     }
+#   }
+# }
 
 resource "aws_codebuild_source_credential" "github_token" {
   auth_type   = "PERSONAL_ACCESS_TOKEN"
