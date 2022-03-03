@@ -1,9 +1,4 @@
-
-# ![Convertr DevOps Technical Task](https://www.convertr.io/wp-content/themes/Convertr/images/logos/cvtr-logo-primary-light.svg)
-
-
-# Solution
-The files in the repository that are a part of the solution for the task are:
+# Contents
 - buildspec.yml
 - Dockerfile
 - terraform (folder)
